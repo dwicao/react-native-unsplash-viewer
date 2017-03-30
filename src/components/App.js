@@ -3,9 +3,10 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   TouchableOpacity,
 } from 'react-native';
+import Image from 'react-native-image-progress';
+import ProgressBar from 'react-native-progress/Bar';
 import MyButton from './MyButton';
 import leftIcon from '../images/back.png';
 import rightIcon from '../images/next.png';
@@ -16,7 +17,7 @@ class App extends Component {
     super();
 
     this.state = {
-      unsplash: `https://unsplash.it/${myWidth}/${myHeight}?image=0`,
+      unsplash: `https://unsplash.it/${myWidth}/${myHeight * 0.87}?image=0`,
     }
 
     this.count = 0;
@@ -28,7 +29,7 @@ class App extends Component {
   }
 
   fetchImage() {
-    this.setState({ unsplash: `https://unsplash.it/${myWidth}/${myHeight}?image=${this.count}` });
+    this.setState({ unsplash: `https://unsplash.it/${myWidth}/${myHeight * 0.87}?image=${this.count}` });
   }
 
   randomize(min, max) {
@@ -56,9 +57,21 @@ class App extends Component {
   }
   
   render() {
+    const indicator = {
+      size: 80,
+      borderWidth: 1,
+      color: '#F5FCFF',
+      unfilledColor: 'rgba(200, 200, 200, 0.8)'
+    };
+
     return (
       <View style={styles.container}>
-        <Image source={{ uri: this.state.unsplash }} style={styles.img} />
+        <Image 
+          source={{ uri: this.state.unsplash }} 
+          indicator={ProgressBar} 
+          indicatorProps={indicator}
+          style={styles.img}
+        />
         <View style={styles.btnWrapper}>
           <MyButton onPress={this.pressPrev} label="Prev" leftIcon={leftIcon} isLeftIcon/>
           <MyButton onPress={this.pressRandom} label="Random" />
@@ -82,7 +95,7 @@ const styles = StyleSheet.create({
   },
   btnWrapper: {
     flexDirection: 'row',
-  }
+  },
 });
 
 export default App;
